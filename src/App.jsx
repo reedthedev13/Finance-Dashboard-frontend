@@ -12,9 +12,10 @@ Chart.register(...registerables);
 const API_URL = "http://localhost:8080/api";
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [newTransactions, setNewTransactions] = useState({
-    date: format(newDate(), "yyyy-MM-dd"),
+    date: format(new Date(), "yyyy-MM-dd"),
     amount: "",
     category: "",
     description: "",
@@ -29,11 +30,14 @@ function App() {
   }, []);
 
   const fetchTransactions = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/transactions`);
       setTransactions(response.data);
     } catch (error) {
       console.error("Error Fetching Transactions", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,23 +47,23 @@ function App() {
         axios.get(`${API_URL}/summary/monthly`),
         axios.get(`${API_URL}/summary/categories`),
       ]);
-      setMonthlySummary(monthlyRes.data);
-      setCategorySummary(categoryRes.data);
-    } catch {
-      error;
-    }
-    {
+      setMonthlySummary(monthlyRes.data || []);
+      setCategorySummary(categoryRes.data || []);
+    } catch (error) {
       console.error("Error Fetching Summaries", error);
+      setMonthlySummary([]);
+      setCategorySummary([]);
     }
   };
 
   const addTransaction = async () => {
     try {
       await axios.post(`${API_URL}/transactions`, {
-        ...newTransaction,
-        amount: parseFloat(newTransaction.amount),
-        date: new Date(newTransaction.date).toISOString(),
+        ...newTransactions,
+        amount: parseFloat(newTransactions.amount),
+        date: new Date(newTransactions.date).toISOString(),
       });
+
       setNewTransactions({
         date: format(new Date(), "yyyy-MM-dd"),
         amount: "",
@@ -80,7 +84,7 @@ function App() {
       fetchTransactions();
       fetchSummaries();
     } catch (error) {
-      console.erorr("Error deleting transactions", error);
+      console.error("Error deleting transactions", error);
     }
   };
 
@@ -114,24 +118,23 @@ function App() {
   };
 
   const monthlyChart = {
-    labels: monthlySummary.map((item) => item.month),
+    labels: monthlySummary?.map((item) => item.month) || [],
     datasets: [
       {
         label: "Income",
-        data: monthlySummary.map((item) => item.totalIncome),
+        data: monthlySummary?.map((item) => item.totalIncome) || [],
         backgroundColor: "#10b981",
       },
       {
         label: "Expense",
-        data: monthlySummary.map((item) => item.totalExpense),
+        data: monthlySummary?.map((item) => item.totalExpense) || [],
         backgroundColor: "#ef4444",
       },
     ],
   };
 
-  const expenseCategory = categorySummary.filter(
-    (item) => item.type === "expense"
-  );
+  const expenseCategory =
+    categorySummary?.filter((item) => item.type === "expense") || [];
   const categoryChart = {
     labels: expenseCategory.map((item) => item.category),
     datasets: [
@@ -152,6 +155,7 @@ function App() {
       },
     ],
   };
+
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <header className="mb-8">
@@ -161,7 +165,6 @@ function App() {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        {/* Add Transaction Form */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Add Transaction</h2>
           <div className="space-y-4">
@@ -172,9 +175,12 @@ function App() {
               <input
                 type="date"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                value={newTransaction.date}
+                value={newTransactions.date}
                 onChange={(e) =>
-                  setNewTransaction({ ...newTransaction, date: e.target.value })
+                  setNewTransactions({
+                    ...newTransactions,
+                    date: e.target.value,
+                  })
                 }
               />
             </div>
@@ -186,10 +192,10 @@ function App() {
                 type="number"
                 step="0.01"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                value={newTransaction.amount}
+                value={newTransactions.amount}
                 onChange={(e) =>
-                  setNewTransaction({
-                    ...newTransaction,
+                  setNewTransactions({
+                    ...newTransactions,
                     amount: e.target.value,
                   })
                 }
@@ -202,10 +208,10 @@ function App() {
               <input
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                value={newTransaction.category}
+                value={newTransactions.category}
                 onChange={(e) =>
-                  setNewTransaction({
-                    ...newTransaction,
+                  setNewTransactions({
+                    ...newTransactions,
                     category: e.target.value,
                   })
                 }
@@ -218,10 +224,10 @@ function App() {
               <input
                 type="text"
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                value={newTransaction.description}
+                value={newTransactions.description}
                 onChange={(e) =>
-                  setNewTransaction({
-                    ...newTransaction,
+                  setNewTransactions({
+                    ...newTransactions,
                     description: e.target.value,
                   })
                 }
@@ -233,9 +239,12 @@ function App() {
               </label>
               <select
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                value={newTransaction.type}
+                value={newTransactions.type}
                 onChange={(e) =>
-                  setNewTransaction({ ...newTransaction, type: e.target.value })
+                  setNewTransactions({
+                    ...newTransactions,
+                    type: e.target.value,
+                  })
                 }
               >
                 <option value="expense">Expense</option>
@@ -251,12 +260,11 @@ function App() {
           </div>
         </div>
 
-        {/* Monthly Summary Chart */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Monthly Summary</h2>
           <div className="h-64">
             <Bar
-              data={monthlyChartData}
+              data={monthlyChart}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
@@ -270,12 +278,11 @@ function App() {
           </div>
         </div>
 
-        {/* Category Breakdown */}
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Expense Categories</h2>
           <div className="h-64">
             <Pie
-              data={categoryChartData}
+              data={categoryChart}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
@@ -285,7 +292,6 @@ function App() {
         </div>
       </div>
 
-      {/* Transactions List */}
       <div className="bg-white p-6 rounded-lg shadow mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Transactions</h2>
@@ -334,40 +340,54 @@ function App() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {format(parseISO(transaction.date), "MMM dd, yyyy")}
-                  </td>
-                  <td
-                    className={`px-6 py-4 whitespace-nowrap text-sm ${
-                      transaction.type === "income"
-                        ? "text-income"
-                        : "text-expense"
-                    }`}
-                  >
-                    {transaction.type === "income" ? "+" : "-"}$
-                    {Math.abs(transaction.amount).toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {transaction.category}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {transaction.description}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
-                    {transaction.type}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    <button
-                      onClick={() => deleteTransaction(transaction.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      <FiTrash2 />
-                    </button>
+              {loading ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-4">
+                    Loading...
                   </td>
                 </tr>
-              ))}
+              ) : !transactions || transactions.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center py-4">
+                    No transactions found
+                  </td>
+                </tr>
+              ) : (
+                transactions.map((transaction) => (
+                  <tr key={transaction.id}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {format(parseISO(transaction.date), "MMM dd, yyyy")}
+                    </td>
+                    <td
+                      className={`px-6 py-4 whitespace-nowrap text-sm ${
+                        transaction.type === "income"
+                          ? "text-income"
+                          : "text-expense"
+                      }`}
+                    >
+                      {transaction.type === "income" ? "+" : "-"}$
+                      {Math.abs(transaction.amount).toFixed(2)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {transaction.category}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {transaction.description}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">
+                      {transaction.type}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      <button
+                        onClick={() => deleteTransaction(transaction.id)}
+                        className="text-red-600 hover:text-red-900"
+                      >
+                        <FiTrash2 />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
