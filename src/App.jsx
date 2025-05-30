@@ -9,7 +9,7 @@ import "./index.css";
 
 Chart.register(...registerables);
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = "https://finance-dashboard-backend-7r50.onrender.com/api";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -170,7 +170,6 @@ function App() {
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-        {/* Transaction Form */}
         <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
           <h2 className="text-xl font-bold text-slate-700 mb-4">
             New Transaction
@@ -226,7 +225,6 @@ function App() {
           </div>
         </div>
 
-        {/* Monthly Summary Chart */}
         <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
           <h2 className="text-xl font-bold text-slate-700 mb-4">
             Monthly Summary
@@ -243,7 +241,6 @@ function App() {
           </div>
         </div>
 
-        {/* Category Pie Chart */}
         <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
           <h2 className="text-xl font-bold text-slate-700 mb-4">
             Expenses by Category
@@ -257,7 +254,6 @@ function App() {
         </div>
       </div>
 
-      {/* Transaction Table */}
       <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-200">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-slate-700">All Transactions</h2>
