@@ -1,12 +1,24 @@
-# React + Vite
+Personal Finance Dashboard 💰
+A sleek and modern personal finance dashboard that helps you track expenses, visualize monthly budgets, and import CSV transactions with ease.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+⚡ Note: The app may load slowly at first due to backend hosting service cold starts.
 
-Currently, two official plugins are available:
+🚀 Features
+Expense Tracking:
+Log and monitor all your daily expenses to stay on top of your finances.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Monthly Budget Visualization:
+Interactive charts powered by Chart.js to see where your money is going.
 
-## Expanding the ESLint configuration
+CSV Import:
+Quickly upload CSV files to import transactions instead of entering them manually.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Modern UI:
+Styled with TailwindCSS for a clean and responsive experience.
+
+🛠 Tech Stack
+Frontend: React + TailwindCSS
+
+Charts: Chart.js
+
+Backend: Go (Golang) API
