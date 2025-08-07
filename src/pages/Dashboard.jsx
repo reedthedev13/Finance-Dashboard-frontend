@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DarkModeToggle from "../components/DarkModeToggle";
 import {
   getTransactions,
   getMonthlySummary,
@@ -81,10 +82,12 @@ const Dashboard = () => {
     });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200 p-4 md:p-10 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 md:p-10 font-sans space-y-5 flex-col">
       <TransactionForm onAddTransaction={handleAddTransaction} />
+
       <SummaryChart data={monthlySummary} />
       <CategoryChart data={categorySummary} />
+
       {/* Search Input */}
       <div className="mb-4 max-w-md mx-auto">
         <input
@@ -92,19 +95,19 @@ const Dashboard = () => {
           placeholder="Search description or category"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full border px-3 py-2 rounded-md"
+          className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 rounded-md"
         />
       </div>
 
       {/* Sort Controls */}
-      <div className="mb-4 max-w-md mx-auto flex gap-2 items-center">
+      <div className="mb-4 max-w-md mx-auto flex gap-2 items-center text-gray-900 dark:text-gray-100">
         <label>Sort by:</label>
         <select
           value={sortConfig.key}
           onChange={(e) =>
             setSortConfig((prev) => ({ ...prev, key: e.target.value }))
           }
-          className="border px-2 py-1 rounded"
+          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-2 py-1 rounded"
         >
           <option value="date">Date</option>
           <option value="amount">Amount</option>
@@ -119,13 +122,12 @@ const Dashboard = () => {
               direction: prev.direction === "asc" ? "desc" : "asc",
             }))
           }
-          className="border px-2 py-1 rounded"
+          className="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-2 py-1 rounded hover:bg-blue-700 dark:hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
         >
           {sortConfig.direction === "asc" ? "↑" : "↓"}
         </button>
       </div>
 
-      {/* Pass filtered and sorted transactions */}
       <TransactionTable
         transactions={filteredTransactions}
         onDelete={handleDeleteTransaction}

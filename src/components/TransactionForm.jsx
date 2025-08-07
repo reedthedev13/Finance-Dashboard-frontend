@@ -34,9 +34,9 @@ const TransactionForm = ({ onAddTransaction }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow p-6 rounded-xl max-w-md w-full mx-auto mb-8"
+      className="bg-white dark:bg-slate-800 shadow p-6 rounded-xl max-w-md w-full mx-auto mb-8"
     >
-      <h2 className="text-xl font-semibold mb-4 text-slate-700">
+      <h2 className="text-xl font-semibold mb-4 text-slate-700 dark:text-slate-200">
         Add Transaction
       </h2>
       <div className="space-y-4">
@@ -45,19 +45,19 @@ const TransactionForm = ({ onAddTransaction }) => {
           placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border px-3 py-2 rounded-md"
+          className="w-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <input
           type="number"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full border px-3 py-2 rounded-md"
+          className="w-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full border px-3 py-2 rounded-md"
+          className="w-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option>Food</option>
           <option>Housing</option>
@@ -70,18 +70,19 @@ const TransactionForm = ({ onAddTransaction }) => {
         <DatePicker
           selected={date}
           onChange={(newDate) => setDate(newDate)}
-          className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholderText="Select a date"
           dateFormat="yyyy-MM-dd"
         />
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 text-gray-900 dark:text-slate-100">
           <label className="flex items-center gap-2">
             <input
               type="radio"
               value="income"
               checked={type === "income"}
               onChange={() => setType("income")}
+              className="accent-blue-600 dark:accent-blue-400"
             />
             Income
           </label>
@@ -91,13 +92,15 @@ const TransactionForm = ({ onAddTransaction }) => {
               value="expense"
               checked={type === "expense"}
               onChange={() => setType("expense")}
+              className="accent-red-600 dark:accent-red-400"
             />
             Expense
           </label>
         </div>
+
         <button
           type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+          className="bg-blue-600 dark:bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition"
         >
           Add Transaction
         </button>
