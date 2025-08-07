@@ -10,14 +10,18 @@ const TransactionForm = ({ onAddTransaction }) => {
     e.preventDefault();
     if (!description || !amount) return;
 
-    onAddTransaction({
+    const transaction = {
       description,
       amount: parseFloat(amount),
       category,
       type,
-    });
+    };
 
-    // Reset
+    console.log("Submitting:", transaction); // ← Add this
+
+    onAddTransaction(transaction);
+
+    // Reset form
     setDescription("");
     setAmount("");
     setCategory("Other");

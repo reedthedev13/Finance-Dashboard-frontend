@@ -4,8 +4,8 @@ import {
   getMonthlySummary,
   getCategorySummary,
   deleteTransaction,
+  addTransaction,
 } from "../services/api";
-import Header from "../components/Header";
 import CategoryChart from "../components/CategoryChart";
 import SummaryChart from "../components/SummaryChart";
 import TransactionForm from "../components/TransactionForm";
@@ -41,8 +41,9 @@ const Dashboard = () => {
     fetchAllData();
   }, []);
 
-  const handleAddTransaction = async () => {
+  const handleAddTransaction = async (newTransaction) => {
     try {
+      await addTransaction(newTransaction);
       await fetchAllData();
     } catch (err) {
       console.error("Error adding transaction", err);
@@ -59,7 +60,7 @@ const Dashboard = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200 p-4 md:p-10 font-sans">
       <TransactionForm onAddTransaction={handleAddTransaction} />
       <SummaryChart data={monthlySummary} />
       <CategoryChart data={categorySummary} />
@@ -67,7 +68,7 @@ const Dashboard = () => {
         transactions={transactions}
         onDelete={handleDeleteTransaction}
       />
-    </>
+    </div>
   );
 };
 
