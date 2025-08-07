@@ -17,6 +17,17 @@ const COLORS = [
 ];
 
 const CategoryChart = ({ data }) => {
+  if (!data?.length) {
+    return (
+      <div className="bg-white shadow rounded-xl p-4 text-center text-gray-500">
+        <h2 className="text-lg font-semibold mb-2 text-slate-700">
+          Expenses by Category
+        </h2>
+        <p>No category data available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white shadow rounded-xl p-4">
       <h2 className="text-lg font-semibold mb-2 text-slate-700">

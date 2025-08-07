@@ -58,47 +58,16 @@ const Dashboard = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen text-gray-700 text-lg">
-        Loading dashboard...
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-slate-200 p-4 md:p-10 font-sans">
-      <Header />
-
-      {error && (
-        <div className="bg-red-100 text-red-800 p-4 rounded-md mb-6">
-          {error}
-        </div>
-      )}
-
-      {/* Transaction Form */}
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
-        <TransactionForm onAddTransaction={handleAddTransaction} />
-      </div>
-
-      {/* Category charts*/}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <SummaryChart data={monthlySummary} />
-        </div>
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <CategoryChart data={categorySummary} />
-        </div>
-      </div>
-
-      {/* Transaction Table */}
-      <div className="bg-white shadow-lg rounded-lg p-6">
-        <TransactionTable
-          transactions={transactions}
-          onDelete={handleDeleteTransaction}
-        />
-      </div>
-    </div>
+    <>
+      <TransactionForm onAddTransaction={handleAddTransaction} />
+      <SummaryChart data={monthlySummary} />
+      <CategoryChart data={categorySummary} />
+      <TransactionTable
+        transactions={transactions}
+        onDelete={handleDeleteTransaction}
+      />
+    </>
   );
 };
 
