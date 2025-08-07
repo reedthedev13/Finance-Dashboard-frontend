@@ -65,7 +65,7 @@ const Dashboard = () => {
     }
   };
 
-  const filteredTransactions = transactions
+  const filteredTransactions = (transactions || [])
     .filter(
       (tx) =>
         tx.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
