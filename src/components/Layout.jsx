@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import DarkModeToggle from "./DarkModeToggle";
-import Header from "./Header"; // import your Header
+import Header from "./Header";
 import { Outlet } from "react-router-dom";
 
 const Layout = () => {
@@ -16,18 +16,21 @@ const Layout = () => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-gray-100">
-      <header className="p-4 flex items-center justify-between">
-        <div className="flex-1 flex justify-center">
+      <header className="p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:justify-between gap-4">
+        {/* Header perfectly centered on all screen sizes */}
+        <div className="w-full flex justify-center text-center">
           <Header />
         </div>
-        <div>
+        {/* Toggle right-aligned on desktop, centered on mobile */}
+        <div className="flex justify-center sm:justify-end">
           <DarkModeToggle
             toggle={() => setDarkMode(!darkMode)}
             isDark={darkMode}
           />
         </div>
       </header>
-      <main className="p-4">
+
+      <main className="p-4 sm:p-6">
         <Outlet />
       </main>
     </div>

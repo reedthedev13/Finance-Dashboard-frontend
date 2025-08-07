@@ -19,11 +19,11 @@ const COLORS = [
 const CategoryChart = ({ data }) => {
   if (!data?.length) {
     return (
-      <div className="bg-white dark:bg-gray-800 shadow rounded-xl p-4 text-center text-gray-500 dark:text-gray-400">
-        <h2 className="text-lg font-semibold mb-2 text-slate-700 dark:text-gray-200">
+      <div className="bg-white dark:bg-gray-800 shadow rounded-xl p-4 sm:p-6 text-center text-gray-500 dark:text-gray-400">
+        <h2 className="text-base sm:text-lg font-semibold mb-2 text-slate-700 dark:text-gray-200">
           Expenses by Category
         </h2>
-        <p>No category data available</p>
+        <p className="text-sm sm:text-base">No category data available</p>
       </div>
     );
   }
@@ -35,8 +35,8 @@ const CategoryChart = ({ data }) => {
         <div
           className="p-2 rounded shadow"
           style={{
-            backgroundColor: "var(--tw-bg-opacity, 1) #1e293b", // slate-800 dark bg
-            color: "var(--tw-text-opacity, 1) #f1f5f9", // slate-100 text
+            backgroundColor: "#1e293b", // slate-800
+            color: "#f1f5f9", // slate-100
             border: "none",
             boxShadow: "0 0 10px rgba(0,0,0,0.5)",
           }}
@@ -49,38 +49,40 @@ const CategoryChart = ({ data }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-800 shadow rounded-xl p-4">
-      <h2 className="text-lg font-semibold mb-2 text-slate-700 dark:text-gray-200">
+    <div className="bg-white dark:bg-slate-800 shadow rounded-xl p-4 sm:p-6">
+      <h2 className="text-base sm:text-lg font-semibold mb-4 text-center text-slate-700 dark:text-gray-200">
         Expenses by Category
       </h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="total"
-            nameKey="category"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label={{ fill: "currentColor" }} // inherit current text color
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={index}
-                fill={COLORS[index % COLORS.length]}
-                fillOpacity={0.8}
-              />
-            ))}
-          </Pie>
-          <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperClassName="text-slate-700 dark:text-gray-200"
-            formatter={(value) => (
-              <span className="dark:text-gray-200">{value}</span>
-            )}
-          />
-        </PieChart>
-      </ResponsiveContainer>
+      <div className="w-full h-[250px] sm:h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="total"
+              nameKey="category"
+              cx="50%"
+              cy="50%"
+              outerRadius="80%"
+              label={{ fill: "currentColor" }}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={index}
+                  fill={COLORS[index % COLORS.length]}
+                  fillOpacity={0.8}
+                />
+              ))}
+            </Pie>
+            <Tooltip content={<CustomTooltip />} />
+            <Legend
+              wrapperClassName="text-xs sm:text-sm text-slate-700 dark:text-gray-200"
+              formatter={(value) => (
+                <span className="dark:text-gray-200">{value}</span>
+              )}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };
