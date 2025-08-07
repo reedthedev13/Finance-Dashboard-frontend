@@ -11,6 +11,8 @@ import {
 const SummaryChart = ({ data }) => {
   const safeData = data || [];
 
+  console.log("SummaryChart Data:", safeData);
+
   return (
     <div className="bg-white shadow rounded-xl p-4">
       <h2 className="text-lg font-semibold mb-2 text-slate-700">
@@ -25,8 +27,8 @@ const SummaryChart = ({ data }) => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="income" fill="#10b981" name="Income" />
-            <Bar dataKey="expenses" fill="#ef4444" name="Expenses" />
+            <Bar dataKey="total_income" fill="#10b981" name="Income" />
+            <Bar dataKey="total_expense" fill="#ef4444" name="Expenses" />
           </BarChart>
         </ResponsiveContainer>
       )}
