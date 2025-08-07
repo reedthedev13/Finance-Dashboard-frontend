@@ -1,10 +1,13 @@
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const TransactionForm = ({ onAddTransaction }) => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("Other");
   const [type, setType] = useState("income");
+  const [date, setDate] = useState(new Date());
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,9 +18,8 @@ const TransactionForm = ({ onAddTransaction }) => {
       amount: parseFloat(amount),
       category,
       type,
+      date: date.toISOString(),
     };
-
-    console.log("Submitting:", transaction); // ← Add this
 
     onAddTransaction(transaction);
 
@@ -26,7 +28,9 @@ const TransactionForm = ({ onAddTransaction }) => {
     setAmount("");
     setCategory("Other");
     setType("income");
+    setDate(new Date());
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -62,6 +66,15 @@ const TransactionForm = ({ onAddTransaction }) => {
           <option>Entertainment</option>
           <option>Other</option>
         </select>
+
+        <DatePicker
+          selected={date}
+          onChange={(newDate) => setDate(newDate)}
+          className="w-full border border-gray-300 px-3 py-2 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholderText="Select a date"
+          dateFormat="yyyy-MM-dd"
+        />
+
         <div className="flex gap-4">
           <label className="flex items-center gap-2">
             <input

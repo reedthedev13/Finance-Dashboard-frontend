@@ -1,51 +1,47 @@
 const TransactionTable = ({ transactions, onDelete }) => {
-  const safeTransactions = transactions || [];
-
   return (
-    <div className="overflow-x-auto bg-white rounded-xl shadow p-4">
-      <table className="min-w-full table-auto text-left text-sm text-slate-700">
-        <thead className="bg-slate-100 text-slate-600 uppercase">
-          <tr>
-            <th className="p-2">Description</th>
-            <th className="p-2">Amount</th>
-            <th className="p-2">Category</th>
-            <th className="p-2">Type</th>
-            <th className="p-2">Date</th>
-            <th className="p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {safeTransactions.length === 0 ? (
+    <div className="mt-6 bg-white rounded-xl shadow p-4">
+      <h2 className="text-lg font-semibold text-slate-700 mb-2">
+        Transactions
+      </h2>
+      {!transactions || transactions.length === 0 ? (
+        <p className="text-gray-500 text-center">No transactions available</p>
+      ) : (
+        <table className="w-full text-sm text-left text-gray-600">
+          <thead className="text-xs uppercase bg-gray-100 text-gray-700">
             <tr>
-              <td colSpan="6" className="text-center p-4 text-gray-500">
-                No transactions found.
-              </td>
+              <th className="px-4 py-2">Date</th>
+              <th className="px-4 py-2">Category</th>
+              <th className="px-4 py-2">Amount</th>
+              <th className="px-4 py-2">Type</th>
+              <th className="px-4 py-2">Description</th>
+              <th className="px-4 py-2">Actions</th>
             </tr>
-          ) : (
-            safeTransactions.map((tx) => (
-              <tr key={tx._id} className="border-t">
-                <td className="p-2">{tx.description}</td>
-                <td className="p-2">
-                  {tx.type === "expense" ? "-" : "+"}${tx.amount.toFixed(2)}
-                </td>
-                <td className="p-2">{tx.category}</td>
-                <td className="p-2">{tx.type}</td>
-                <td className="p-2">
+          </thead>
+          <tbody>
+            {transactions.map((tx) => (
+              <tr key={tx.id} className="border-b">
+                <td className="px-4 py-2">
                   {new Date(tx.date).toLocaleDateString()}
                 </td>
-                <td className="p-2">
+
+                <td className="px-4 py-2">{tx.category}</td>
+                <td className="px-4 py-2">${tx.amount}</td>
+                <td className="px-4 py-2 capitalize">{tx.type}</td>
+                <td className="px-4 py-2">{tx.description}</td>
+                <td className="px-4 py-2">
                   <button
-                    onClick={() => onDelete(tx._id)}
+                    onClick={() => onDelete(tx.id)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    🗑
+                    🗑️
                   </button>
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
