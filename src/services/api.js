@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = "https://finance-dashboard-backend-1.onrender.com";
 
 export const getTransactions = () => axios.get(`${API_URL}/transactions`);
 
