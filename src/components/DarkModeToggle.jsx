@@ -18,7 +18,7 @@ const DarkModeToggle = () => {
     } else {
       root.classList.remove("dark");
     }
-    localStorage.setItem("darkMode", darkMode);
+    localStorage.setItem("darkMode", darkMode ? "true" : "false");
   }, [darkMode]);
 
   return (
