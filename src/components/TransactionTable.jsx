@@ -1,13 +1,36 @@
-import { FilePlus2 } from "lucide-react"; // lightweight icon for empty state
+import { FilePlus2 } from "lucide-react"; // empty state icon
+import Papa from "papaparse";
 
 const TransactionTable = ({ transactions, onDelete }) => {
   const hasNoTransactions = !transactions || transactions.length === 0;
 
+  const handleExportCSV = () => {
+    if (!transactions || transactions.length === 0) return;
+
+    const csv = Papa.unparse(transactions);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "transactions.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="mt-6 bg-white dark:bg-slate-800 rounded-xl shadow p-4 sm:p-6 transition-colors">
-      <h2 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-4">
-        Transactions
-      </h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-slate-700 dark:text-slate-200">
+          Transactions
+        </h2>
+        <button
+          onClick={handleExportCSV}
+          className="flex items-center gap-1 text-sm px-3 py-1 bg-blue-600 dark:bg-blue-500 text-white rounded hover:bg-blue-700 dark:hover:bg-blue-600 transition shadow-sm"
+        >
+          Export CSV
+        </button>
+      </div>
 
       {hasNoTransactions ? (
         // 💡 Empty State
