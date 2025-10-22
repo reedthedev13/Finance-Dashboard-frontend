@@ -1,14 +1,25 @@
+import { FilePlus2 } from "lucide-react"; // lightweight icon for empty state
+
 const TransactionTable = ({ transactions, onDelete }) => {
+  const hasNoTransactions = !transactions || transactions.length === 0;
+
   return (
-    <div className="mt-6 bg-white dark:bg-slate-800 rounded-xl shadow p-4">
+    <div className="mt-6 bg-white dark:bg-slate-800 rounded-xl shadow p-4 sm:p-6 transition-colors">
       <h2 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-4">
         Transactions
       </h2>
 
-      {!transactions || transactions.length === 0 ? (
-        <p className="text-gray-500 dark:text-slate-400 text-center">
-          No transactions available
-        </p>
+      {hasNoTransactions ? (
+        // 💡 Empty State
+        <div className="flex flex-col items-center justify-center py-16 text-center text-slate-500 dark:text-slate-400">
+          <FilePlus2 className="w-12 h-12 mb-3 text-slate-400 dark:text-slate-500" />
+          <p className="text-lg font-medium text-slate-600 dark:text-slate-300">
+            No transactions yet
+          </p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+            Add your first income or expense to start tracking.
+          </p>
+        </div>
       ) : (
         <div className="overflow-x-auto">
           {/* Desktop Table */}

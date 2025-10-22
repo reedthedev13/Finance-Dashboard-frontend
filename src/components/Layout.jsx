@@ -1,3 +1,4 @@
+// src/components/Layout.jsx
 import { useState, useEffect } from "react";
 import DarkModeToggle from "./DarkModeToggle";
 import Header from "./Header";
@@ -7,22 +8,15 @@ const Layout = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", darkMode);
   }, [darkMode]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 text-black dark:text-gray-100">
-      <header className="p-4 sm:p-6 flex flex-col sm:flex-row items-center sm:justify-between gap-4">
-        {/* Header perfectly centered on all screen sizes */}
-        <div className="w-full flex justify-center text-center">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300 flex flex-col">
+      {/* Header bar spans full width */}
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 shadow-sm w-full">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
           <Header />
-        </div>
-        {/* Toggle right-aligned on desktop, centered on mobile */}
-        <div className="flex justify-center sm:justify-end">
           <DarkModeToggle
             toggle={() => setDarkMode(!darkMode)}
             isDark={darkMode}
@@ -30,9 +24,17 @@ const Layout = () => {
         </div>
       </header>
 
-      <main className="p-4 sm:p-6">
-        <Outlet />
+      {/* Main content fills full screen width but centers content */}
+      <main className="flex-grow w-full">
+        <div className="max-w-6xl mx-auto px-6 py-8">
+          <Outlet />
+        </div>
       </main>
+
+      {/* Optional footer (if you want spacing at bottom) */}
+      <footer className="py-6 text-center text-sm text-slate-500 dark:text-slate-400">
+        © {new Date().getFullYear()} Finance Dashboard
+      </footer>
     </div>
   );
 };
