@@ -1,33 +1,15 @@
-import { useEffect, useState } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 const DarkModeToggle = () => {
-  const [darkMode, setDarkMode] = useState(() => {
-    // Initialize from localStorage or system preference
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("darkMode");
-      if (saved !== null) return saved === "true";
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (darkMode) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-    localStorage.setItem("darkMode", darkMode ? "true" : "false");
-  }, [darkMode]);
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <button
-      onClick={() => setDarkMode(!darkMode)}
-      className="p-2 rounded bg-gray-200 dark:bg-gray-700"
-      aria-label="Toggle Dark Mode"
+      onClick={toggleTheme}
+      className="p-2 px-4 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 font-medium shadow-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition"
     >
-      {darkMode ? "☀️ Light" : "🌙 Dark"}
+      {isDark ? "☀️ Light" : "🌙 Dark"}
     </button>
   );
 };
